@@ -1,0 +1,15 @@
+.root {
+    padding-block: 10px;
+    padding-left: 10px;
+    outline: 1px solid red;
+}
+
+
+.input{
+    border: none;
+    outline: none;
+    background-color: inherit;
+    color: inherit;
+    font-size: 20px;
+    width: 100%;
+}
