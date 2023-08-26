@@ -1,6 +1,6 @@
 import styles from "./NewItem.module.css";
 import React, { useId } from "react";
-import { useItemsContext } from "../../contexts/ItemsContext.tsx";
+import { useItemsContext } from "../../hooks/useItemsContext.ts";
 
 export const NewItem = () => {
   const { dispatch } = useItemsContext();

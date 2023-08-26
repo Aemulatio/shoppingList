@@ -2,7 +2,6 @@ import {
   createContext,
   type Dispatch,
   type ReactNode,
-  useContext,
   useReducer,
 } from "react";
 
@@ -12,18 +11,12 @@ export type ItemProps = {
   text: string;
 };
 
-type ContextValue = {
+export type ContextValue = {
   state: ItemProps[];
   dispatch: Dispatch<Action>;
 };
 
-const ItemsContext = createContext<ContextValue | null>(null);
-
-export const useItemsContext = (): ContextValue => {
-  const context = useContext(ItemsContext);
-  if (context === null) throw new Error("No context");
-  return context;
-};
+export const ItemsContext = createContext<ContextValue | null>(null);
 
 type ActionTypes = "ADD" | "DELETE";
 

@@ -1,7 +1,7 @@
 import { Item } from "../Item/Item.tsx";
 import styles from "./List.module.css";
 import { NewItem } from "../NewItem/NewItem.tsx";
-import { useItemsContext } from "../../contexts/ItemsContext.tsx";
+import { useItemsContext } from "../../hooks/useItemsContext.ts";
 
 export const List = () => {
   // const Items = new Array(10).fill("Молоко и еще чтонибудь зазазаза");
