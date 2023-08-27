@@ -4,6 +4,16 @@
     padding-block: 10px;
     padding-left: 10px;
 }
-.root:not(:first-of-type){
+
+.root:not(:first-of-type) {
     border-top: 0;
+}
+
+.root:has(input:checked) {
+    background-color: #064572;
+}
+
+.root > input {
+    display: none;
+    position: absolute;
 }

@@ -5,6 +5,7 @@ import { type ItemProps } from "../../contexts/ItemsContext.tsx";
 export const Item: FC<ItemProps> = ({ text, id, done }) => {
   return (
     <label className={styles.root} key={id}>
+      <input type="checkbox" name="done" defaultChecked={done} />
       {text}
     </label>
   );

@@ -4,7 +4,6 @@ import { NewItem } from "../NewItem/NewItem.tsx";
 import { useItemsContext } from "../../hooks/useItemsContext.ts";
 
 export const List = () => {
-  // const Items = new Array(10).fill("Молоко и еще чтонибудь зазазаза");
   const { state: Items } = useItemsContext();
 
   return (
