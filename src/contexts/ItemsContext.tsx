@@ -2,8 +2,10 @@ import {
   createContext,
   type Dispatch,
   type ReactNode,
+  useEffect,
   useReducer,
 } from "react";
+import { setLocalStorage } from "../utils";
 
 export type ItemProps = {
   id: number | string;
@@ -29,21 +31,27 @@ type Action = {
   type: ActionTypes;
   payload: ItemProps;
 };
-// type Reducer<State, Action> = (state: State, action: Action) => State;
 
 const reducer = (state: ItemProps[], action: Action) => {
   switch (action.type) {
     case Actions.ADD:
+      setLocalStorage("items", [...state, action.payload]);
       return [...state, action.payload];
     case Actions.DELETE:
-      return state;
+      setLocalStorage(
+        "items",
+        state.filter((item) => item.id !== action.payload.id),
+      );
+      return state.filter((item) => item.id !== action.payload.id);
     default:
       return state;
   }
 };
 export const Context = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, []);
-
+  useEffect(() => {
+    // window.onbeforeunload = () => false;
+  });
   return (
     <ItemsContext.Provider value={{ state, dispatch }}>
       {children}
