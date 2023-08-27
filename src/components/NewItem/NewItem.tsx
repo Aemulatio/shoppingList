@@ -1,18 +1,23 @@
 import styles from "./NewItem.module.css";
-import React, { useId } from "react";
+import React from "react";
 import { useItemsContext } from "../../hooks/useItemsContext.ts";
 
 export const NewItem = () => {
   const { dispatch } = useItemsContext();
-  const id = useId();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!(e.target as HTMLFormElement).childNodes.length) return;
-
+    if (
+      !(
+        (e.target as HTMLFormElement).childNodes[0]
+          .firstChild as HTMLInputElement
+      ).value.length
+    )
+      return;
     dispatch({
       type: "ADD",
       payload: {
-        id,
+        id: Math.random().toString().slice(3),
         text: (
           (e.target as HTMLFormElement).childNodes[0]
             .firstChild as HTMLInputElement
