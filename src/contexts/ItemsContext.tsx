@@ -5,7 +5,7 @@ import {
   useEffect,
   useReducer,
 } from "react";
-import { setLocalStorage } from "../utils";
+import { readLocalStorage, setLocalStorage } from "../utils";
 
 export type ItemProps = {
   id: number | string;
@@ -20,16 +20,17 @@ export type ContextValue = {
 
 export const ItemsContext = createContext<ContextValue | null>(null);
 
-type ActionTypes = "ADD" | "DELETE";
+type ActionTypes = "ADD" | "DELETE" | "READ";
 
 const Actions: Record<ActionTypes, ActionTypes> = {
   ADD: "ADD",
   DELETE: "DELETE",
+  READ: "READ",
 };
 
 type Action = {
   type: ActionTypes;
-  payload: ItemProps;
+  payload?: ItemProps;
 };
 
 const reducer = (state: ItemProps[], action: Action) => {
@@ -43,6 +44,8 @@ const reducer = (state: ItemProps[], action: Action) => {
         state.filter((item) => item.id !== action.payload.id),
       );
       return state.filter((item) => item.id !== action.payload.id);
+    case Actions.READ:
+      return readLocalStorage("items");
     default:
       return state;
   }
@@ -50,8 +53,9 @@ const reducer = (state: ItemProps[], action: Action) => {
 export const Context = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, []);
   useEffect(() => {
+    dispatch({ type: Actions.READ });
     // window.onbeforeunload = () => false;
-  });
+  }, []);
   return (
     <ItemsContext.Provider value={{ state, dispatch }}>
       {children}
