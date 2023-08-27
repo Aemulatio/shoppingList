@@ -36,9 +36,11 @@ type Action = {
 const reducer = (state: ItemProps[], action: Action) => {
   switch (action.type) {
     case Actions.ADD:
+      if (!action.payload) return;
       setLocalStorage("items", [...state, action.payload]);
       return [...state, action.payload];
     case Actions.DELETE:
+      if (!action.payload) return;
       setLocalStorage(
         "items",
         state.filter((item) => item.id !== action.payload.id),
