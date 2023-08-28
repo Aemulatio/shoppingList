@@ -30,7 +30,7 @@ const Actions: Record<ActionTypes, ActionTypes> = {
 
 type Action = {
   type: ActionTypes;
-  payload?: ItemProps;
+  payload?: Partial<ItemProps>;
 };
 
 const reducer = (state: ItemProps[], action: Action) => {

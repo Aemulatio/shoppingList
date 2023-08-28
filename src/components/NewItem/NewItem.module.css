@@ -1,11 +1,17 @@
 .root {
     padding-block: 10px;
     padding-left: 10px;
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-color-scheme: light) {
+    .root {
+        background-color: rgba(0, 0, 0, .1);
+    }
 }
 
 
-.input{
+.input {
     border: none;
     outline: none;
     background-color: inherit;
