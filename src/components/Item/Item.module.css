@@ -37,4 +37,5 @@
     padding-block: 10px;
     padding-left: 10px;
     fill: currentColor;
+    flex: 1 0 auto;
 }

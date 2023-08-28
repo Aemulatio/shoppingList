@@ -11,39 +11,87 @@ export const Item: FC<ItemProps> = ({ text, id, done }) => {
     const element = ref.current;
     const getEvent = (event: MouseEvent) =>
       event.type.search("touch") !== -1 ? event.touches[0] : event;
-    let posX1 = 0,
-      posX2 = 0;
-    const trfRegExp = /[-0-9.]+(?=px)/;
+    let posX1 = 50,
+      posX2 = 0,
+      posInit = 0,
+      shown = false;
+    const trfRegExp = /[-0-9.]+(?=px)/,
+      slideWidth = 50;
+
+    const calculateNewPosition = (newPos: number, posX2: number): number => {
+      if (shown) {
+        return 0;
+      }
+      if (posX2 < 0) {
+        return 0;
+      }
+      return newPos > 0 ? 0 : newPos < 50 ? -50 : newPos;
+    };
 
     const touchStart = (e) => {
-      console.log(e);
+      const evt = getEvent(e);
+      posInit = posX1 = evt.clientX;
+
+      element.style.transition = "";
+
+      document.addEventListener("touchmove", touchMove);
+      document.addEventListener("touchend", swipeEnd);
+      document.addEventListener("mousemove", touchMove);
+      document.addEventListener("mouseup", swipeEnd);
     };
     const touchMove = (e: TouchEvent) => {
-      console.log(e);
       const evt = getEvent(e),
         // для более красивой записи возьмем в переменную текущее свойство transform
-        style = element.style.transform,
-        // считываем трансформацию с помощью регулярного выражения и сразу превращаем в число
-        transform = +style.match(trfRegExp)[0];
+        style = element.style.transform;
+      // считываем трансформацию с помощью регулярного выражения и сразу превращаем в число
+      if (style.match(trfRegExp) === null) return;
+      const transform = +style.match(trfRegExp)[0];
 
       posX2 = posX1 - evt.clientX;
       posX1 = evt.clientX;
+      const newPos = transform - posX2;
+      const translate = calculateNewPosition(newPos, posX2);
+      shown = translate >= 50;
+      console.log("translate: ", translate);
+      console.log("posX2: ", posX2);
+      element.style.transform = `translate3d(${translate}px, 0px, 0px)`;
+    };
+    const swipeEnd = function () {
+      document.removeEventListener("touchmove", touchMove);
+      document.removeEventListener("mousemove", touchMove);
+      document.removeEventListener("touchend", swipeEnd);
+      document.removeEventListener("mouseup", swipeEnd);
 
-      element.style.transform = `translate3d(${transform - posX2}px, 0px, 0px)`;
-      // можно было бы использовать метод строк .replace():
-      // sliderTrack.style.transform = style.replace(trfRegExp, match => match - posX2);
-      // но в дальнейшем нам нужна будет текущая трансформация в переменной
+      // если курсор двигался, то запускаем функцию переключения слайдов
+      if (posInit !== posX1) {
+        slide();
+      }
     };
 
-    // element.addEventListener("touchstart", touchStart);
-    element.addEventListener("touchmove", touchMove);
+    const slide = function () {
+      element.style.transition = "transform .5s";
+      element.style.transform = `translate3d(-${
+        shown ? 0 : slideWidth
+      }px, 0px, 0px)`;
+    };
+
+    element.addEventListener("touchstart", touchStart);
+    element.addEventListener("mousedown", touchStart);
+    return () => {
+      element.removeEventListener("touchstart", touchStart);
+      element.removeEventListener("mousedown", touchStart);
+    };
   }, [ref]);
 
   const handleDelete = () => {
     dispatch({ type: "DELETE", payload: { id } });
   };
   return (
-    <div className={styles.root} ref={ref}>
+    <div
+      className={styles.root}
+      ref={ref}
+      style={{ transform: "translate3d(0px, 0px, 0px)" }}
+    >
       <label key={id} className={styles.label}>
         <input type="checkbox" name="done" defaultChecked={done} />
         {text}
