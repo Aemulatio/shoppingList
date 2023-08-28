@@ -9,8 +9,10 @@ export const Item: FC<ItemProps> = ({ text, id, done }) => {
   useEffect(() => {
     if (!ref || !ref.current) return;
     const element = ref.current;
-    const getEvent = (event: MouseEvent) =>
-      event.type.search("touch") !== -1 ? event.touches[0] : event;
+    const getEvent = (event: TouchEvent | MouseEvent) => {
+      if (event instanceof TouchEvent) return event.touches[0];
+      return event;
+    };
     let posX1 = 50,
       posX2 = 0,
       posInit = 0,
@@ -28,7 +30,7 @@ export const Item: FC<ItemProps> = ({ text, id, done }) => {
       return newPos > 0 ? 0 : newPos < 50 ? -50 : newPos;
     };
 
-    const touchStart = (e) => {
+    const touchStart = (e: TouchEvent | MouseEvent) => {
       const evt = getEvent(e);
       posInit = posX1 = evt.clientX;
 
@@ -39,12 +41,14 @@ export const Item: FC<ItemProps> = ({ text, id, done }) => {
       document.addEventListener("mousemove", touchMove);
       document.addEventListener("mouseup", swipeEnd);
     };
-    const touchMove = (e: TouchEvent) => {
+    const touchMove = (e: TouchEvent | MouseEvent) => {
       const evt = getEvent(e),
         // для более красивой записи возьмем в переменную текущее свойство transform
         style = element.style.transform;
       // считываем трансформацию с помощью регулярного выражения и сразу превращаем в число
       if (style.match(trfRegExp) === null) return;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const transform = +style.match(trfRegExp)[0];
 
       posX2 = posX1 - evt.clientX;

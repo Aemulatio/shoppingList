@@ -37,14 +37,20 @@ const reducer = (state: ItemProps[], action: Action) => {
   switch (action.type) {
     case Actions.ADD:
       if (!action.payload) return;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       setLocalStorage("items", [...state, action.payload]);
       return [...state, action.payload];
     case Actions.DELETE:
       if (!action.payload) return;
       setLocalStorage(
         "items",
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         state.filter((item) => item.id !== action.payload.id),
       );
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       return state.filter((item) => item.id !== action.payload.id);
     case Actions.READ:
       return readLocalStorage("items");
