@@ -8,8 +8,8 @@ export const List = () => {
 
   return (
     <div className={styles.root}>
-      {Items.map((item, key) => (
-        <Item {...item} key={key} />
+      {Items.map((item) => (
+        <Item {...item} key={item.id} />
       ))}
       <NewItem />
     </div>
