@@ -39,3 +39,11 @@
     fill: currentColor;
     flex: 1 0 auto;
 }
+@media (width > 500px) {
+    .label{
+        flex: 1 0 auto;
+    }
+    .button{
+        flex: 0 1 auto;
+    }
+}

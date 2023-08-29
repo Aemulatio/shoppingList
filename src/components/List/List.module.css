@@ -3,3 +3,9 @@
     flex-flow: column;
     overflow: hidden;
 }
+
+@media (width > 500px) {
+    .root {
+        overflow: unset;
+    }
+}
