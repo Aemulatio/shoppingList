@@ -20,12 +20,13 @@ export type ContextValue = {
 
 export const ItemsContext = createContext<ContextValue | null>(null);
 
-type ActionTypes = "ADD" | "DELETE" | "READ";
+type ActionTypes = "ADD" | "DELETE" | "READ" | "SELECT_ALL";
 
 const Actions: Record<ActionTypes, ActionTypes> = {
   ADD: "ADD",
   DELETE: "DELETE",
   READ: "READ",
+  SELECT_ALL: "SELECT_ALL",
 };
 
 type Action = {
@@ -54,6 +55,8 @@ const reducer = (state: ItemProps[], action: Action) => {
       return state.filter((item) => item.id !== action.payload.id);
     case Actions.READ:
       return readLocalStorage("items");
+    case Actions.SELECT_ALL:
+      return [...state.map((item) => ({ ...item, done: true }))];
     default:
       return state;
   }

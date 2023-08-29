@@ -22,13 +22,20 @@ body {
     margin: 0;
 }
 
+#root{
+    display: flex;
+    flex-flow: column;
+    height: 100dvh;
+}
+
+
+
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;
         background-color: #ffffff;
     }
 }
-
 
 @media (width > 500px) {
     body {
